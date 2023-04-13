@@ -1,4 +1,4 @@
-### 실전 문제 - 게임 개발 ### 풀이 시간 : 53분 50초
+### 실전 문제 - 게임 개발 ### 풀이 시간 : 1시간 30분
 ################################## 
 ## 내 답안
 # 입력
@@ -9,71 +9,54 @@ a, b, d = map(int, input().split())
 land = []
 for i in range(n):
     input_data = list(map(int, input().split()))
-    land += [(i, x) for x, j in enumerate(input_data) if j == 0]
+    land += [(i, j) for j, x in enumerate(input_data) if x == 0]
 
 # d=0 ~ d=3일 때 왼쪽 방향으로 이동 경로
 nas = [0, -1, 0, 1]
 nbs = [-1, 0, 1, 0]
+# 뒤로 이동 경로
+back_nas = [1, 0, -1, 0]
+back_nbs = [0, -1, 0, 1] 
 
-log = []
-# while True:
-#     new_location = (a + na[d], b + nb[d])
-    
-#     # 땅인 경우
-#     if new_location in land:
-#         # 방문한 적 있는 경우
-#         if new_location in log:
-#             d = abs(d + 3) % 4
-        
-#         # 방문한 적 없는 경우
-#         else:
-#             # 이동
-#             a = new_location[0]
-#             b = new_location[1]
-#             # 방향 변경
-#             d = abs(d + 3) % 4
-#             # log에 추가
-#             log.append(new_location)
-            
-#     # 바다인 경우
-#     else:
-#         # 방향 변경
-#         d = abs(d + 3) % 4
-
-    
-# 방법 2
+log = [(a, b)]
 while True:
-    # 4방향으로 해서 안바뀌면 멈추어야함
-    new_location = (a + nas[d], b + nbs[d])
-    for _ in range(4):
+    na, nb = a, b
+    for i in range(4):
+        new_location = (a + nas[d], b + nbs[d])
         # 땅인 경우
         if new_location in land:
             # 방문한 적 있는 경우 : 회전
             if new_location in log:
                 d = abs(d + 3) % 4
-            
-            # 방문한 적 없는 경우 : 이동
+            # 방문한 적 없는 경우 : 이동 -> break
             else:
-                # 이동
                 na = new_location[0]
                 nb = new_location[1]
-                # 방향 변경
                 d = abs(d + 3) % 4
-                # log에 추가
-                log.append(new_location)
-        
+                if new_location not in log:
+                    log.append(new_location)    # log에 추가
+                break
         # 바다인 경우 : 회전
         else:
             d = abs(d + 3) % 4
             
-    # 4번 반복해서 그대로인 경우 멈춤
-    if na == new_location[0] and nb == new_location[1]:
-        break
-        
+    # 4번 반복해서 이동하지 않은 경우
+    if na == a and nb == b:
+        new_location = (a + back_nas[d], b + back_nbs[d])        
+        # 뒤가 바다인 경우 -> break
+        if new_location not in land:
+            break
+        # 뒤가 바다가 아닌 경우 -> 뒤로 이동
+        else:
+            na = new_location[0]
+            nb = new_location[1]
+            if new_location not in log:            
+                log.append(new_location)
     
-        
-        
+    a, b = na, nb
 
+print(len(log))
+    
 
 ##################################
 ## 예시 답안
