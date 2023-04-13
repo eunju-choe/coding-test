@@ -1,5 +1,5 @@
 ### 실전 문제 - 큰 수의 법칙 ### 풀이 시간 : 10분
-
+##################################
 ## 내 답안
 n, m, k = map(int, input().split())
 inputs = list(map(int, input().split()))
